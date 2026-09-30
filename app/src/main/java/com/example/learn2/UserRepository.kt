@@ -37,4 +37,30 @@ class UserRepository @Inject constructor(
             Resource.Error(AppError.Unknown)
         }
     }
+
+    suspend fun getUserName(): Resource<String> {
+        return try {
+
+            val userDto = api.getUser()
+
+            Resource.Success(userDto.toUser().name)
+
+        } catch (e: IOException) {
+
+            Resource.Error(AppError.NoInternet)
+
+        } catch (e: HttpException) {
+
+            when (e.code()) {
+                404 -> Resource.Error(AppError.NotFound)
+                500 -> Resource.Error(AppError.Server)
+                else -> Resource.Error(AppError.Unknown)
+            }
+
+        } catch (e: Exception) {
+
+            Resource.Error(AppError.Unknown)
+        }
+    }
+
 }
