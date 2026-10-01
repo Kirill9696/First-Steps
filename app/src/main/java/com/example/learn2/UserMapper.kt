@@ -6,3 +6,9 @@ fun UserDto.toUser(): User {
         profession = username
     )
 }
+
+fun UserDto.toUserName(): UserName {
+    return UserName(
+        name = name
+    )
+}

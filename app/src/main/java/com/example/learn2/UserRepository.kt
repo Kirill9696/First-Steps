@@ -10,13 +10,13 @@ data class User(
 )
 
 class UserRepository @Inject constructor(
-    private val api: UserApi
+    private val remoteDataSource: RemoteUserDataSource
 ) {
 
     suspend fun getUser(): Resource<User> {
         return try {
 
-            val userDto = api.getUser()
+            val userDto = remoteDataSource.getUser()
 
             Resource.Success(userDto.toUser())
 
@@ -41,7 +41,7 @@ class UserRepository @Inject constructor(
     suspend fun getUserName(): Resource<String> {
         return try {
 
-            val userDto = api.getUser()
+            val userDto = remoteDataSource.getUser()
 
             Resource.Success(userDto.toUser().name)
 
